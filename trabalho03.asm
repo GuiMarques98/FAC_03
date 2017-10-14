@@ -1,8 +1,7 @@
 .data
 
-message:		.asciiz "O valor calculador com os primeiros 5 temos da série é:"
+message:		.asciiz "O valor calculador com os primeiros 5 termos da série é:"
 msg_leitura: 	.asciiz "Informe o valor de arcoseno que deseja calcular: "
-fatorial: 	.word 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600
 binom: 		.word 1, 2, 6, 20, 70, 252, 924, 3432, 12870, 48620, 184756
 
 .text
@@ -16,7 +15,7 @@ main:
 	# $s0 - contador do for 
 	# $s3  - exponenciacao de 4 
 	# $s4  - auxiliar inteiro
-	# $s5 e $s6 - vão apontar para a os binmomioes e fatorial na memória respectivamente
+	# $s6 - vão apontar para a os binmomioes e fatorial na memória respectivamente
 	
 	# --- OBESERVAÇÃO ---
 	# * Como o número de termos da série é constante, preferimos deixar na memória para evitar alguns cáculos
@@ -25,11 +24,10 @@ main:
 	#   preprocessamos esses termos e deixamos na memória.
 	
 	
-	la $s5, fatorial # load fatorial
 	la $s6, binom #load binom
 	
 	# exponenciacao com 4
-	add $s3, $zero, 4
+	add $s3, $zero, 1
 	
 	jal le_double	#Funcao de leitura de um double
 	
@@ -37,6 +35,10 @@ main:
 	
  	mtc1 $zero ,$f12 # zerando $f12 que será nosso resultado 
  	cvt.d.w $f12, $f12 # convertendo (não é necessário mas esse passo está aqui somente pra garantir)
+	
+	#criando o exponencial 4^0
+	
+	
 	
 	for: 			
 	
@@ -67,7 +69,7 @@ main:
   		
   		add $s0, $s0, 1 
   		
-	bne $s0, 4, for
+	bne $s0, 5, for
 	
 	la $a0, message
 	li $v0, 4
